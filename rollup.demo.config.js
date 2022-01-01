@@ -1,24 +1,23 @@
-import buble from "@rollup/plugin-buble"
-import nodeResolve from "rollup-plugin-node-resolve"
-import commonJS from "rollup-plugin-commonjs"
+import babel from '@rollup/plugin-babel'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 
 export default {
-  input: "demo.js",
-  output: { format: "iife", file: "demo_bundle.js" },
+  input: 'demo.js',
+  output: { format: 'iife', file: 'demo_bundle.js' },
   plugins: [
-    buble({
-      exclude: "node_modules/**",
-      namedFunctionExpressions: false
+    commonjs({
+      include: '../**',
+      sourceMap: false,
+    }),
+    babel({
+      exclude: 'node_modules/**',
+      babelHelpers: 'runtime',
     }),
 
     nodeResolve({
-      main: true,
-      browser: true
+      mainFields: ['main'],
+      browser: true,
     }),
-
-    commonJS({
-      include: '../**',
-      sourceMap: false
-    })
-  ]
+  ],
 }

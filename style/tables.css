@@ -1,35 +1,40 @@
 .ProseMirror .tableWrapper {
   overflow-x: auto;
 }
+
 .ProseMirror table {
-  border-collapse: collapse;
-  table-layout: fixed;
   width: 100%;
   overflow: hidden;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
+
 .ProseMirror td, .ProseMirror th {
-  vertical-align: top;
-  box-sizing: border-box;
   position: relative;
+  box-sizing: border-box;
+  vertical-align: top;
 }
+
 .ProseMirror .column-resize-handle {
-  position: absolute;
-  right: -2px; top: 0; bottom: 0;
-  width: 4px;
+  position: absolute; top: 0;
+  right: -2px; bottom: 0;
   z-index: 20;
+  width: 4px;
   background-color: #adf;
   pointer-events: none;
 }
+
 .ProseMirror.resize-cursor {
   cursor: ew-resize;
   cursor: col-resize;
 }
+
 /* Give selected cells a blue overlay */
-.ProseMirror .selectedCell:after {
+.ProseMirror .selectedCell::after {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  left: 0;
   z-index: 2;
-  position: absolute;
+  background: rgb(200 200 255 / 40%);
   content: "";
-  left: 0; right: 0; top: 0; bottom: 0;
-  background: rgba(200, 200, 255, 0.4);
   pointer-events: none;
 }
