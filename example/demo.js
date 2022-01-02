@@ -21,8 +21,11 @@ import {
   toggleHeaderCell,
   goToNextCell,
   deleteTable,
-} from './src/commands'
-import { tableEditing, columnResizing, tableNodes, fixTables } from './src'
+  tableEditing,
+  columnResizing,
+  tableNodes,
+  fixTables,
+} from '../src'
 
 const schema = new Schema({
   nodes: baseSchema.spec.nodes.append(

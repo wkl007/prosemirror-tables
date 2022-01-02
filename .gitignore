@@ -18,4 +18,4 @@ pnpm-debug.log*
 *.sw?
 
 # bundle
-/demo_bundle.js
+/example/demo_bundle.js

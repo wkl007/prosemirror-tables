@@ -22,21 +22,19 @@
     }
   ],
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -w -c",
+    "dev": "rollup -w -c config/rollup.dev.config.js",
+    "build": "rollup -c config/rollup.prod.config.js",
     "build_readme": "builddocs --name tables --format markdown --main src/README.md src/*.js > README.md",
-    "build_demo": "rollup -c rollup.demo.config.js",
-    "watch_demo": "rollup -w -c rollup.demo.config.js",
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:style": "stylelint --fix style/**/*.{css,less,scss,sass} ",
+    "lint:style": "stylelint --fix example/style/**/*.{css,less,scss,sass} ",
     "test": "mocha test/test-*.js",
     "typecheck": "tsc --noEmit",
     "prepare": "husky install"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "prettier --write",
-    "style/**/*.{css,less,scss,sass}": "stylelint --fix"
+    "example/style/**/*.{css,less,scss,sass}": "stylelint --fix"
   },
   "dependencies": {
     "prosemirror-keymap": "^1.1.5",
@@ -73,6 +71,10 @@
     "prosemirror-schema-basic": "^1.1.2",
     "prosemirror-test-builder": "^1.0.5",
     "rollup": "^2.62.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.5.2",
     "stylelint": "^14.2.0",
     "stylelint-config-html": "^1.0.0",
     "stylelint-config-prettier": "^9.0.3",
