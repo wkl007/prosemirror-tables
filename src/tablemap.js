@@ -1,13 +1,9 @@
-// Because working with row and column-spanning cells is not quite
-// trivial, this code builds up a descriptive structure for a given
-// table node. The structures are cached with the (persistent) table
-// nodes as key, so that they only have to be recomputed when the
-// content of the table changes.
-//
-// This does mean that they have to store table-relative, not
-// document-relative positions. So code that uses them will typically
-// compute the start position of the table and offset positions passed
-// to or gotten from this structure by that amount.
+/**
+ * 因为使用跨行和跨列的单元格不是很简单，所以这段代码为给定的表节点构建了一个描述性结构。
+ * 这些结构以（持久的）表节点作为键进行缓存，因此只有在表的内容发生变化时才需要重新计算它们。
+ * 这确实意味着他们必须存储相对于表的位置，而不是相对于文档的位置。
+ * 因此，使用它们的代码通常会计算表的起始位置以及传递给该结构或从该结构获得的偏移位置。
+ */
 
 let readFromCache
 let addToCache

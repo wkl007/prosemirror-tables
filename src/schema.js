@@ -1,4 +1,6 @@
-// Helper for creating a schema that supports tables.
+/**
+ * 用于创建支持表的模式的助手
+ */
 
 function getCellAttrs(dom, extraAttrs) {
   const widthAttr = dom.getAttribute('data-colwidth')

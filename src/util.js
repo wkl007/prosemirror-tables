@@ -1,12 +1,21 @@
-// Various helper function for working with tables
-
+/**
+ * 该文件实现了处理表格相关的工具辅助函数
+ */
 import { PluginKey } from 'prosemirror-state'
-
 import { TableMap } from './tablemap'
 import { tableNodeTypes } from './schema'
 
+/**
+ * 选择单元格 key
+ * @type {PluginKey<any, any>}
+ */
 export const key = new PluginKey('selectingCells')
 
+/**
+ * 单元格周围
+ * @param $pos
+ * @returns {null|*}
+ */
 export function cellAround($pos) {
   for (let d = $pos.depth - 1; d > 0; d--) {
     if ($pos.node(d).type.spec.tableRole === 'row') {
@@ -16,6 +25,11 @@ export function cellAround($pos) {
   return null
 }
 
+/**
+ * 单元格包装
+ * @param $pos
+ * @returns {null|*}
+ */
 export function cellWrapping($pos) {
   for (let d = $pos.depth; d > 0; d--) {
     // Sometimes the cell can be in the same depth.
@@ -25,6 +39,11 @@ export function cellWrapping($pos) {
   return null
 }
 
+/**
+ * 当前选区是否在表格中
+ * @param state
+ * @returns {boolean}
+ */
 export function isInTable(state) {
   const { $head } = state.selection
   for (let d = $head.depth; d > 0; d--) {
@@ -33,6 +52,11 @@ export function isInTable(state) {
   return false
 }
 
+/**
+ * 选择单元格
+ * @param state
+ * @returns {*}
+ */
 export function selectionCell(state) {
   const sel = state.selection
   if (sel.$anchorCell) {
@@ -46,6 +70,11 @@ export function selectionCell(state) {
   return cellAround(sel.$head) || cellNear(sel.$head)
 }
 
+/**
+ * 单元格附近
+ * @param $pos
+ * @returns {*}
+ */
 function cellNear($pos) {
   for (
     let after = $pos.nodeAfter, { pos } = $pos;
@@ -67,26 +96,59 @@ function cellNear($pos) {
   }
 }
 
+/**
+ * 点在单元格
+ * @param $pos
+ * @returns {false|*}
+ */
 export function pointsAtCell($pos) {
   return $pos.parent.type.spec.tableRole === 'row' && $pos.nodeAfter
 }
 
+/**
+ * 向前移动单元格
+ * @param $pos
+ * @returns {*}
+ */
 export function moveCellForward($pos) {
   return $pos.node(0).resolve($pos.pos + $pos.nodeAfter.nodeSize)
 }
 
+/**
+ * 在同一个表格中
+ * @param $a
+ * @param $b
+ * @returns {boolean}
+ */
 export function inSameTable($a, $b) {
   return $a.depth === $b.depth && $a.pos >= $b.start(-1) && $a.pos <= $b.end(-1)
 }
 
+/**
+ * 查找单元格
+ * @param $pos
+ * @returns {*}
+ */
 export function findCell($pos) {
   return TableMap.get($pos.node(-1)).findCell($pos.pos - $pos.start(-1))
 }
 
+/**
+ * 列数
+ * @param $pos
+ * @returns {*}
+ */
 export function colCount($pos) {
   return TableMap.get($pos.node(-1)).colCount($pos.pos - $pos.start(-1))
 }
 
+/**
+ * 下一个单元格
+ * @param $pos
+ * @param axis
+ * @param dir
+ * @returns {null|*}
+ */
 export function nextCell($pos, axis, dir) {
   const start = $pos.start(-1)
   const map = TableMap.get($pos.node(-1))
@@ -94,6 +156,13 @@ export function nextCell($pos, axis, dir) {
   return moved == null ? null : $pos.node(0).resolve(start + moved)
 }
 
+/**
+ * 设置属性
+ * @param attrs
+ * @param name
+ * @param value
+ * @returns {{}}
+ */
 export function setAttr(attrs, name, value) {
   const result = {}
   for (const prop in attrs) result[prop] = attrs[prop]
@@ -101,6 +170,13 @@ export function setAttr(attrs, name, value) {
   return result
 }
 
+/**
+ * 删除跨列属性
+ * @param attrs
+ * @param pos
+ * @param n
+ * @returns {{}}
+ */
 export function removeColSpan(attrs, pos, n = 1) {
   const result = setAttr(attrs, 'colspan', attrs.colspan - n)
   if (result.colwidth) {
@@ -111,6 +187,13 @@ export function removeColSpan(attrs, pos, n = 1) {
   return result
 }
 
+/**
+ * 添加跨列属性
+ * @param attrs
+ * @param pos
+ * @param n
+ * @returns {{}}
+ */
 export function addColSpan(attrs, pos, n = 1) {
   const result = setAttr(attrs, 'colspan', attrs.colspan + n)
   if (result.colwidth) {
@@ -120,6 +203,13 @@ export function addColSpan(attrs, pos, n = 1) {
   return result
 }
 
+/**
+ * 列是标题
+ * @param map
+ * @param table
+ * @param col
+ * @returns {boolean}
+ */
 export function columnIsHeader(map, table, col) {
   const headerCell = tableNodeTypes(table.type.schema).header_cell
   for (let row = 0; row < map.height; row++) {

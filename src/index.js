@@ -1,9 +1,6 @@
-// This file defines a plugin that handles the drawing of cell
-// selections and the basic user interactions for creating and working
-// with such selections. It also makes sure that, after each
-// transaction, the shapes of tables are normalized to be rectangular
-// and not contain overlapping cells.
-
+/**
+ * 该文件实现了单元格选中相关功能
+ */
 import { Plugin } from 'prosemirror-state'
 
 import {

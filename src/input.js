@@ -1,6 +1,6 @@
-// This file defines a number of helpers for wiring up user input to
-// table-related functionality.
-
+/**
+ * 该文件定义了许多帮助程序，用于将用户输入连接到与表相关的功能。
+ */
 import { Slice, Fragment } from 'prosemirror-model'
 import { Selection, TextSelection } from 'prosemirror-state'
 import { keydownHandler } from 'prosemirror-keymap'

@@ -1,7 +1,7 @@
-// This file defines a ProseMirror selection subclass that models
-// table cell selections. The table plugin needs to be active to wire
-// in the user interaction part of table selections (so that you
-// actually get such selections when you select across cells).
+/**
+ * 该文件定义了一个对表格单元格选择建模的 ProseMirror 选择子类。
+ * 表格插件需要激活以连接表格选择的用户交互部分（以便在跨单元格选择时实际获得此类选择）。
+ */
 
 import {
   Selection,

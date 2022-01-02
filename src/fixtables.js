@@ -1,7 +1,7 @@
-// This file defines helpers for normalizing tables, making sure no
-// cells overlap (which can happen, if you have the wrong col- and
-// rowspans) and that each row has the same width. Uses the problems
-// reported by `TableMap`.
+/**
+ * 该文件定义了用于规范化表格的帮助程序，确保没有单元格重叠（如果您的 col- 和 rowspans 错误，则可能会发生这种情况）并且每行具有相同的宽度。
+ * 使用`TableMap`报告的问题。
+ */
 import { PluginKey } from 'prosemirror-state'
 import { TableMap } from './tablemap'
 import { setAttr, removeColSpan } from './util'

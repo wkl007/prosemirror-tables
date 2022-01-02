@@ -1,8 +1,8 @@
-// This file defines a number of table-related commands.
-
+/**
+ * 该文件实现了表格相关的 commands
+ */
 import { TextSelection } from 'prosemirror-state'
 import { Fragment } from 'prosemirror-model'
-
 import { Rect, TableMap } from './tablemap'
 import { CellSelection } from './cellselection'
 import {
@@ -18,9 +18,11 @@ import {
 } from './util'
 import { tableNodeTypes } from './schema'
 
-// Helper to get the selected rectangle in a table, if any. Adds table
-// map, table node, and table start offset to the object for
-// convenience.
+/**
+ * 帮助获取表格中选定的矩形（如果有），为方便起见，向对象添加表映射、表节点和表起始偏移量
+ * @param state
+ * @returns {*}
+ */
 export function selectedRect(state) {
   const sel = state.selection
   const $pos = selectionCell(state)
@@ -40,7 +42,15 @@ export function selectedRect(state) {
   return rect
 }
 
-// Add a column at the given position in a table.
+/**
+ * 在表中的给定位置添加一列
+ * @param tr
+ * @param map
+ * @param tableStart
+ * @param table
+ * @param col
+ * @returns {*}
+ */
 export function addColumn(tr, { map, tableStart, table }, col) {
   let refColumn = col > 0 ? -1 : 0
   if (columnIsHeader(map, table, col + refColumn)) {
@@ -72,8 +82,12 @@ export function addColumn(tr, { map, tableStart, table }, col) {
   return tr
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Command to add a column before the column with the selection.
+/**
+ * 在有选择的列之前添加一列
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function addColumnBefore(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -83,8 +97,12 @@ export function addColumnBefore(state, dispatch) {
   return true
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Command to add a column after the column with the selection.
+/**
+ * 在有选择的列之后添加一列
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function addColumnAfter(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -94,6 +112,14 @@ export function addColumnAfter(state, dispatch) {
   return true
 }
 
+/**
+ * 删除列
+ * @param tr
+ * @param map
+ * @param table
+ * @param tableStart
+ * @param col
+ */
 export function removeColumn(tr, { map, table, tableStart }, col) {
   const mapStart = tr.mapping.maps.length
   for (let row = 0; row < map.height; ) {
@@ -118,8 +144,12 @@ export function removeColumn(tr, { map, table, tableStart }, col) {
   }
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Command function that removes the selected columns from a table.
+/**
+ * 从表格中指定位置删除列
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function deleteColumn(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -137,6 +167,13 @@ export function deleteColumn(state, dispatch) {
   return true
 }
 
+/**
+ * 行是标题
+ * @param map
+ * @param table
+ * @param row
+ * @returns {boolean}
+ */
 export function rowIsHeader(map, table, row) {
   const headerCell = tableNodeTypes(table.type.schema).header_cell
   for (let col = 0; col < map.width; col++) {
@@ -147,6 +184,15 @@ export function rowIsHeader(map, table, row) {
   return true
 }
 
+/**
+ * 添加行
+ * @param tr
+ * @param map
+ * @param tableStart
+ * @param table
+ * @param row
+ * @returns {*}
+ */
 export function addRow(tr, { map, tableStart, table }, row) {
   let rowPos = tableStart
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize
@@ -182,8 +228,12 @@ export function addRow(tr, { map, tableStart, table }, row) {
   return tr
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Add a table row before the selection.
+/**
+ * 在选择位置之前添加行
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function addRowBefore(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -193,8 +243,12 @@ export function addRowBefore(state, dispatch) {
   return true
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Add a table row after the selection.
+/**
+ * 在选择位置之后添加行
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function addRowAfter(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -204,6 +258,14 @@ export function addRowAfter(state, dispatch) {
   return true
 }
 
+/**
+ * 删除行
+ * @param tr
+ * @param map
+ * @param table
+ * @param tableStart
+ * @param row
+ */
 export function removeRow(tr, { map, table, tableStart }, row) {
   let rowPos = 0
   for (let i = 0; i < row; i++) rowPos += table.child(i).nodeSize
@@ -237,8 +299,12 @@ export function removeRow(tr, { map, table, tableStart }, row) {
   }
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Remove the selected rows from a table.
+/**
+ * 从表格中删除指定的行
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function deleteRow(state, dispatch) {
   if (!isInTable(state)) return false
   if (dispatch) {
@@ -256,6 +322,11 @@ export function deleteRow(state, dispatch) {
   return true
 }
 
+/**
+ * 是空单元格
+ * @param cell
+ * @returns {boolean}
+ */
 function isEmpty(cell) {
   const c = cell.content
   return (
@@ -265,6 +336,14 @@ function isEmpty(cell) {
   )
 }
 
+/**
+ * 单元格重叠矩形
+ * @param width
+ * @param height
+ * @param map
+ * @param rect
+ * @returns {boolean}
+ */
 function cellsOverlapRectangle({ width, height, map }, rect) {
   let indexTop = rect.top * width + rect.left
   let indexLeft = indexTop
@@ -293,9 +372,12 @@ function cellsOverlapRectangle({ width, height, map }, rect) {
   return false
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Merge the selected cells into a single cell. Only available when
-// the selected cells' outline forms a rectangle.
+/**
+ * 合并单元格
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function mergeCells(state, dispatch) {
   const sel = state.selection
   if (
@@ -355,9 +437,12 @@ export function mergeCells(state, dispatch) {
   return true
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Split a selected cell, whose rowpan or colspan is greater than one,
-// into smaller cells. Use the first cell type for the new cells.
+/**
+ * 拆分单元格
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function splitCell(state, dispatch) {
   const nodeTypes = tableNodeTypes(state.schema)
   return splitCellWithType(({ node }) => nodeTypes[node.type.spec.tableRole])(
@@ -366,9 +451,11 @@ export function splitCell(state, dispatch) {
   )
 }
 
-// :: (getCellType: ({ row: number, col: number, node: Node}) → NodeType) → (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Split a selected cell, whose rowpan or colspan is greater than one,
-// into smaller cells with the cell type (th, td) returned by getType function.
+/**
+ * 根据类型拆分单元格
+ * @param getCellType
+ * @returns {(function(*, *): (boolean))|*}
+ */
 export function splitCellWithType(getCellType) {
   return (state, dispatch) => {
     const sel = state.selection
@@ -436,10 +523,12 @@ export function splitCellWithType(getCellType) {
   }
 }
 
-// :: (string, any) → (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Returns a command that sets the given attribute to the given value,
-// and is only available when the currently selected cell doesn't
-// already have that attribute set to that value.
+/**
+ * 设置单元格属性
+ * @param name
+ * @param value
+ * @returns {(function(*, *): (boolean))|*}
+ */
 export function setCellAttr(name, value) {
   return function (state, dispatch) {
     if (!isInTable(state)) return false
@@ -466,6 +555,11 @@ export function setCellAttr(name, value) {
   }
 }
 
+/**
+ * 不推荐使用的切换标题
+ * @param type
+ * @returns {(function(*, *): (boolean))|*}
+ */
 function deprecatedToggleHeader(type) {
   return function (state, dispatch) {
     if (!isInTable(state)) return false
@@ -514,6 +608,13 @@ function deprecatedToggleHeader(type) {
   }
 }
 
+/**
+ * 是否按类型启用标头
+ * @param type
+ * @param rect
+ * @param types
+ * @returns {boolean}
+ */
 function isHeaderEnabledByType(type, rect, types) {
   // Get cell positions for first row or first column
   const cellPositions = rect.map.cellsInRect({
@@ -533,9 +634,12 @@ function isHeaderEnabledByType(type, rect, types) {
   return true
 }
 
-// :: (string, ?{ useDeprecatedLogic: bool }) → (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Toggles between row/column header and normal cells (Only applies to first row/column).
-// For deprecated behavior pass `useDeprecatedLogic` in options with true.
+/**
+ * 切换标题
+ * @param type
+ * @param options
+ * @returns {(function(*, *): (boolean))|*|(function(*, *): boolean)}
+ */
 export function toggleHeader(type, options) {
   options = options || { useDeprecatedLogic: false }
 
@@ -597,22 +701,34 @@ export function toggleHeader(type, options) {
   }
 }
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Toggles whether the selected row contains header cells.
+/**
+ * 切换标题行
+ * @type {(function(*, *): boolean)|*}
+ */
 export const toggleHeaderRow = toggleHeader('row', { useDeprecatedLogic: true })
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Toggles whether the selected column contains header cells.
+/**
+ * 切换标题列
+ * @type {(function(*, *): boolean)|*}
+ */
 export const toggleHeaderColumn = toggleHeader('column', {
   useDeprecatedLogic: true,
 })
 
-// :: (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Toggles whether the selected cells are header cells.
+/**
+ * 切换标题单元格
+ * @type {(function(*, *): boolean)|*}
+ */
 export const toggleHeaderCell = toggleHeader('cell', {
   useDeprecatedLogic: true,
 })
 
+/**
+ * 查找下一个单元格
+ * @param $cell
+ * @param dir
+ * @returns {number|*}
+ */
 function findNextCell($cell, dir) {
   if (dir < 0) {
     const before = $cell.nodeBefore
@@ -643,9 +759,11 @@ function findNextCell($cell, dir) {
   }
 }
 
-// :: (number) → (EditorState, dispatch: ?(tr: Transaction)) → bool
-// Returns a command for selecting the next (direction=1) or previous
-// (direction=-1) cell in a table.
+/**
+ * 转到下一个单元格
+ * @param direction
+ * @returns {(function(*, *): (boolean|undefined))|*}
+ */
 export function goToNextCell(direction) {
   return function (state, dispatch) {
     if (!isInTable(state)) return false
@@ -663,8 +781,12 @@ export function goToNextCell(direction) {
   }
 }
 
-// :: (EditorState, ?(tr: Transaction)) → bool
-// Deletes the table around the selection, if any.
+/**
+ * 删除表格
+ * @param state
+ * @param dispatch
+ * @returns {boolean}
+ */
 export function deleteTable(state, dispatch) {
   const $pos = state.selection.$anchor
   for (let d = $pos.depth; d > 0; d--) {

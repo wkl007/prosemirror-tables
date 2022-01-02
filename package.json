@@ -4,8 +4,7 @@
   "description": "ProseMirror's rowspan/colspan tables component",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "style": "style/tables.css",
-  "typings": "./index.d.ts",
+  "types": "index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,7 +23,6 @@
   "scripts": {
     "dev": "rollup -w -c config/rollup.dev.config.js",
     "build": "rollup -c config/rollup.prod.config.js",
-    "build_readme": "builddocs --name tables --format markdown --main src/README.md src/*.js > README.md",
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:style": "stylelint --fix example/style/**/*.{css,less,scss,sass} ",
@@ -54,7 +52,6 @@
     "@rollup/plugin-node-resolve": "^13.1.2",
     "@types/prosemirror-model": "^1.13.2",
     "@types/prosemirror-state": "^1.2.8",
-    "builddocs": "^1.0.1",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",

@@ -1,15 +1,9 @@
-// Utilities used for copy/paste handling.
-//
-// This module handles pasting cell content into tables, or pasting
-// anything into a cell selection, as replacing a block of cells with
-// the content of the selection. When pasting cells into a cell, that
-// involves placing the block of pasted content so that its top left
-// aligns with the selection cell, optionally extending the table to
-// the right or bottom to make sure it is large enough. Pasting into a
-// cell selection is different, here the cells in the selection are
-// clipped to the selection's rectangle, optionally repeating the
-// pasted cells when they are smaller than the selection.
-
+/**
+ * 该文件实现了表格复制粘贴。
+ * 该模块处理将单元格内容粘贴到表格中，或将任何内容粘贴到单元格选择中，就像用选择的内容替换单元格块一样。
+ * 将单元格粘贴到单元格中时，这涉及放置粘贴内容块，使其左上角与选择单元格对齐，可选择将表格向右或底部扩展以确保它足够大。
+ * 粘贴到单元格选择是不同的，这里选择中的单元格被剪裁到选择的矩形，当它们小于选择时可选择重复粘贴的单元格。
+ */
 import { Slice, Fragment } from 'prosemirror-model'
 import { Transform } from 'prosemirror-transform'
 

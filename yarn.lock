@@ -1006,16 +1006,6 @@ buffer-from@^1.0.0:
   resolved "https://registry.nlark.com/buffer-from/download/buffer-from-1.1.2.tgz?cache=0&sync_timestamp=1627578361955&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fbuffer-from%2Fdownload%2Fbuffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha1-KxRqb9cugLT1XSVfNe1Zo6mkG9U=
 
-builddocs@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmmirror.com/builddocs/download/builddocs-1.0.1.tgz#8a30815c6df6c26810354dacf7e1e2b8462665c5"
-  integrity sha1-ijCBXG32wmgQNU2s9+HiuEYmZcU=
-  dependencies:
-    getdocs-ts "^0.1.0"
-    markdown-it "^6.0.5"
-    markdown-it-deflist "^2.0.0"
-    mold-template "^2.0.0"
-
 builtin-modules@^3.1.0:
   version "3.2.0"
   resolved "https://registry.nlark.com/builtin-modules/download/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
@@ -1624,7 +1614,7 @@ enquirer@^2.3.5:
   dependencies:
     ansi-colors "^4.1.1"
 
-entities@^1.1.1, entities@~1.1.1:
+entities@^1.1.1:
   version "1.1.2"
   resolved "https://registry.nlark.com/entities/download/entities-1.1.2.tgz?cache=0&sync_timestamp=1628508126700&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fentities%2Fdownload%2Fentities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha1-vfpzUplmTfr9NFKe1PhSKidf6lY=
@@ -2185,13 +2175,6 @@ get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.nlark.com/get-value/download/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
-
-getdocs-ts@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.nlark.com/getdocs-ts/download/getdocs-ts-0.1.0.tgz#2bd4d7bd7581f1f7709603ffede6c3739ca18138"
-  integrity sha1-K9TXvXWB8fdwlgP/7ebDc5yhgTg=
-  dependencies:
-    typescript "^4.1.3"
 
 git-raw-commits@^2.0.0:
   version "2.0.11"
@@ -3058,13 +3041,6 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmmirror.com/lines-and-columns/download/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-linkify-it@~1.2.2:
-  version "1.2.4"
-  resolved "https://registry.npmmirror.com/linkify-it/download/linkify-it-1.2.4.tgz#0773526c317c8fd13bd534ee1d180ff88abf881a"
-  integrity sha1-B3NSbDF8j9E71TTuHRgP+Iq/iBo=
-  dependencies:
-    uc.micro "^1.0.1"
-
 lint-staged@^12.1.4:
   version "12.1.4"
   resolved "https://registry.npmmirror.com/lint-staged/download/lint-staged-12.1.4.tgz#a92ec8509f13018caaafade61d515c2d5873316e"
@@ -3254,22 +3230,6 @@ markdown-escapes@^1.0.0:
   resolved "https://registry.npmmirror.com/markdown-escapes/download/markdown-escapes-1.0.4.tgz#c95415ef451499d7602b91095f3c8e8975f78535"
   integrity sha1-yVQV70UUmddgK5EJXzyOiXX3hTU=
 
-markdown-it-deflist@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.nlark.com/markdown-it-deflist/download/markdown-it-deflist-2.1.0.tgz#50d7a56b9544cd81252f7623bd785e28a8dcef5c"
-  integrity sha1-UNela5VEzYElL3YjvXheKKjc71w=
-
-markdown-it@^6.0.5:
-  version "6.1.1"
-  resolved "https://registry.npmmirror.com/markdown-it/download/markdown-it-6.1.1.tgz#ced037f4473ee9f5153ac414f77dc83c91ba927c"
-  integrity sha1-ztA39Ec+6fUVOsQU933IPJG6knw=
-  dependencies:
-    argparse "^1.0.7"
-    entities "~1.1.1"
-    linkify-it "~1.2.2"
-    mdurl "~1.0.1"
-    uc.micro "^1.0.1"
-
 markdown-table@^1.1.0:
   version "1.1.3"
   resolved "https://registry.npmmirror.com/markdown-table/download/markdown-table-1.1.3.tgz#9fcb69bcfdb8717bfd0398c6ec2d93036ef8de60"
@@ -3286,11 +3246,6 @@ mdast-util-compact@^1.0.0:
   integrity sha1-1TG7dme1Ejq/IIWb4IbE0GyJRZM=
   dependencies:
     unist-util-visit "^1.1.0"
-
-mdurl@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.nlark.com/mdurl/download/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
-  integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
 
 meow@^5.0.0:
   version "5.0.0"
@@ -3467,11 +3422,6 @@ mocha@^9.1.3:
     yargs "16.2.0"
     yargs-parser "20.2.4"
     yargs-unparser "2.0.0"
-
-mold-template@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.npmmirror.com/mold-template/download/mold-template-2.0.2.tgz#dce15fa1159e91682bae436cf396d340fb7bd779"
-  integrity sha1-3OFfoRWekWgrrkNs85bTQPt713k=
 
 ms@2.0.0:
   version "2.0.0"
@@ -5268,7 +5218,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.1.3, typescript@^4.4.3, typescript@^4.5.4:
+typescript@^4.4.3, typescript@^4.5.4:
   version "4.5.4"
   resolved "https://registry.npmmirror.com/typescript/download/typescript-4.5.4.tgz#a17d3a0263bf5c8723b9c52f43c5084edf13c2e8"
   integrity sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==
@@ -5279,11 +5229,6 @@ typings-tester@^0.3.2:
   integrity sha1-BMxJnRWrHYstFN1IQVoT0BMzvFs=
   dependencies:
     commander "^2.12.2"
-
-uc.micro@^1.0.1:
-  version "1.0.6"
-  resolved "https://registry.nlark.com/uc.micro/download/uc.micro-1.0.6.tgz#9c411a802a409a91fc6cf74081baba34b24499ac"
-  integrity sha1-nEEagCpAmpH8bPdAgbq6NLJEmaw=
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
