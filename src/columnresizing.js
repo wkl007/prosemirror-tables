@@ -404,12 +404,8 @@ function handleDecorations(state, cell) {
   for (let row = 0; row < map.height; row++) {
     // 单元格对应列中单元格在 map.map 中 index
     const index = col + row * map.width - 1
-    // 1.表格最右侧边框线 2. 不是跨列的单元格 3. 第一行或者当前单元格上一个单元格不是跨行的单元格
-    // TODO 第三个判断有误，需移除
-    if (
-      (col === map.width || map.map[index] !== map.map[index + 1]) &&
-      (row === 0 || map.map[index - 1] !== map.map[index - 1 - map.width])
-    ) {
+    // 1.表格最右侧边框线 2. 不是跨列的单元格
+    if (col === map.width || map.map[index] !== map.map[index + 1]) {
       const cellPos = map.map[index]
       const pos = start + cellPos + table.nodeAt(cellPos).nodeSize - 1
       const dom = document.createElement('div')
