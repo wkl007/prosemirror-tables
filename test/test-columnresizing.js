@@ -18,6 +18,7 @@ describe('ColumnResizing', () => {
       tr(/* 36 */ c11, /* 41 */ c11, /* 46 */ c11)
     )
   )
+
   // 跨行表格
   const t1 = doc(
     table(
@@ -26,6 +27,7 @@ describe('ColumnResizing', () => {
       tr(/* 41 */ c11, /* 46 */ c11, /* 51 */ c11)
     )
   )
+
   // 跨列表格
   const t2 = doc(
     table(
@@ -36,6 +38,17 @@ describe('ColumnResizing', () => {
     )
   )
 
+  // 跨行跨列表格
+  const t3 = doc(
+    table(
+      tr(/* 2 */ c(1, 2), /* 7 */ c11, /* 12 */ c11, /* 17 */ c11),
+      tr(/* 24 */ c(1, 1), /* 29 */ c(2, 2)),
+      tr(/* 36 */ c(2, 1)),
+      tr(/* 43 */ c11, /* 48 */ c(2, 1), /* 53 */ c11)
+    )
+  )
+
+  // 初始化 state
   function initState(doc) {
     return EditorState.create({
       doc,
@@ -43,10 +56,12 @@ describe('ColumnResizing', () => {
     })
   }
 
+  // 更新 state
   function updateState(state, setHandle) {
     return state.apply(state.tr.setMeta(columnResizingPluginKey, { setHandle }))
   }
 
+  // 获取 decorations
   function getDecorations(state) {
     return columnResizingPlugin.props.decorations(state).find()
   }
@@ -106,5 +121,33 @@ describe('ColumnResizing', () => {
     // 第四行
     const state8 = updateState(state, 43)
     ist(getDecorations(state8).length, 4)
+  })
+
+  it('测试跨行跨列表格', () => {
+    const state = initState(t3)
+    // 第一行
+    const state1 = updateState(state, 2)
+    ist(getDecorations(state1).length, 3)
+    const state2 = updateState(state, 7)
+    ist(getDecorations(state2).length, 3)
+    const state3 = updateState(state, 12)
+    ist(getDecorations(state3).length, 2)
+    const state4 = updateState(state, 17)
+    ist(getDecorations(state4).length, 4)
+    // 第二行
+    const state5 = updateState(state, 24)
+    ist(getDecorations(state5).length, 3)
+    const state6 = updateState(state, 29)
+    ist(getDecorations(state6).length, 4)
+    // 第三行
+    const state7 = updateState(state, 36)
+    ist(getDecorations(state7).length, 3)
+    // 第四行
+    const state8 = updateState(state, 43)
+    ist(getDecorations(state8).length, 3)
+    const state9 = updateState(state, 48)
+    ist(getDecorations(state9).length, 2)
+    const state10 = updateState(state, 53)
+    ist(getDecorations(state10).length, 4)
   })
 })
