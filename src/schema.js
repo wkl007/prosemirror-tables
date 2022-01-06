@@ -2,6 +2,12 @@
  * 用于创建支持表的模式的助手
  */
 
+/**
+ * 获取单元格 attrs
+ * @param dom 单元格 DOM
+ * @param extraAttrs 属性
+ * @returns {{colspan: number, rowspan: number, colwidth: (*|null)}}
+ */
 function getCellAttrs(dom, extraAttrs) {
   const widthAttr = dom.getAttribute('data-colwidth')
   const widths =
@@ -22,6 +28,12 @@ function getCellAttrs(dom, extraAttrs) {
   return result
 }
 
+/**
+ * 设置单元格 attrs
+ * @param node 单元格 Node
+ * @param extraAttrs 属性
+ * @returns {{}} attrs
+ */
 function setCellAttrs(node, extraAttrs) {
   const attrs = {}
   if (node.attrs.colspan !== 1) attrs.colspan = node.attrs.colspan
@@ -66,6 +78,10 @@ function setCellAttrs(node, extraAttrs) {
 //       setDOMAttr:: ?(value: any, attrs: Object)
 //       A function to add the attribute's value to an attribute
 //       object that's used to render the cell's DOM.
+/**
+ * 表格 Node
+ * @param options
+ */
 export function tableNodes(options) {
   const extraAttrs = options.cellAttributes || {}
   const cellAttrs = {
@@ -123,6 +139,11 @@ export function tableNodes(options) {
   }
 }
 
+/**
+ * 表格 Node 类型
+ * @param schema
+ * @returns {any}
+ */
 export function tableNodeTypes(schema) {
   let result = schema.cached.tableNodeTypes
   if (!result) {

@@ -7,8 +7,7 @@
 
 let readFromCache
 let addToCache
-// Prefer using a weak map to cache table maps. Fall back on a
-// fixed-size cache if that's not supported.
+// 更喜欢使用弱映射来缓存表映射。如果不支持，则使用固定大小的缓存。
 if (typeof WeakMap !== 'undefined') {
   const cache = new WeakMap()
   readFromCache = (key) => cache.get(key)
@@ -32,6 +31,9 @@ if (typeof WeakMap !== 'undefined') {
   }
 }
 
+/**
+ * Rect 数据
+ */
 export class Rect {
   constructor(left, top, right, bottom) {
     this.left = left
@@ -41,26 +43,28 @@ export class Rect {
   }
 }
 
-// ::- A table map describes the structore of a given table. To avoid
-// recomputing them all the time, they are cached per table node. To
-// be able to do that, positions saved in the map are relative to the
-// start of the table, rather than the start of the document.
+/**
+ * 表格映射
+ * 为了避免一直重新计算它们，它们按表节点缓存。
+ * 为了能够做到这一点，保存在 map 中的位置相对于表格的开头，而不是文档的开头。
+ */
 export class TableMap {
   constructor(width, height, map, problems) {
-    // :: number The width of the table
+    // 表格宽度
     this.width = width
-    // :: number The table's height
+    // 表格高度
     this.height = height
-    // :: [number] A width * height array with the start position of
-    // the cell covering that part of the table in each slot
+    // 表格 map 数组，其中每一项对应单元格在表格中的 pos 信息
     this.map = map
-    // An optional array of problems (cell overlap or non-rectangular
-    // shape) for the table, used by the table normalizer.
+    // 表格的可选问题数组（单元格重叠或非矩形形状），由表格规范器使用。
     this.problems = problems
   }
 
-  // :: (number) → Rect
-  // Find the dimensions of the cell at the given position.
+  /**
+   * 查找单元格
+   * @param pos 单元格 pos 信息
+   * @returns {Rect} 单元格 Rect 数据
+   */
   findCell(pos) {
     for (let i = 0; i < this.map.length; i++) {
       const curPos = this.map[i]
@@ -84,8 +88,11 @@ export class TableMap {
     throw new RangeError(`No cell with offset ${pos} found`)
   }
 
-  // :: (number) → number
-  // Find the left side of the cell at the given position.
+  /**
+   * 找到表格列索引
+   * @param pos 单元格 pos 信息
+   * @returns {number} 列索引
+   */
   colCount(pos) {
     for (let i = 0; i < this.map.length; i++) {
       if (this.map[i] === pos) return i % this.width
@@ -93,9 +100,13 @@ export class TableMap {
     throw new RangeError(`No cell with offset ${pos} found`)
   }
 
-  // :: (number, string, number) → ?number
-  // Find the next cell in the given direction, starting from the cell
-  // at `pos`, if any.
+  /**
+   * 查找下一个单元格
+   * @param pos 单元格 pos 信息
+   * @param axis 方向 horiz 水平 vert 垂直
+   * @param dir 1 下一个 -1 上一个
+   * @returns {null|*} 单元格 pos 信息
+   */
   nextCell(pos, axis, dir) {
     const { left, right, top, bottom } = this.findCell(pos)
     if (axis === 'horiz') {
@@ -106,8 +117,12 @@ export class TableMap {
     return this.map[left + this.width * (dir < 0 ? top - 1 : bottom)]
   }
 
-  // :: (number, number) → Rect
-  // Get the rectangle spanning the two given cells.
+  /**
+   * 获取两个单元格 Rect 数据
+   * @param a 单元格 pos 信息
+   * @param b 单元格 pos 信息
+   * @returns {Rect} Rect 数据
+   */
   rectBetween(a, b) {
     const {
       left: leftA,
@@ -129,9 +144,11 @@ export class TableMap {
     )
   }
 
-  // :: (Rect) → [number]
-  // Return the position of all cells that have the top left corner in
-  // the given rectangle.
+  /**
+   * 返回给定 Rect 数据中所有单元格 pos 信息
+   * @param rect Rect 数据
+   * @returns {*[]} pos 数组
+   */
   cellsInRect(rect) {
     const result = []
     const seen = {}
@@ -152,16 +169,20 @@ export class TableMap {
     return result
   }
 
-  // :: (number, number, Node) → number
-  // Return the position at which the cell at the given row and column
-  // starts, or would start, if a cell started there.
+  /**
+   * 返回给定行列的单元格 pos 信息
+   * @param row 行
+   * @param col 列
+   * @param table 表格
+   * @returns {number|*} 单元格 pos 信息
+   */
   positionAt(row, col, table) {
     for (let i = 0, rowStart = 0; ; i++) {
       const rowEnd = rowStart + table.child(i).nodeSize
       if (i === row) {
         let index = col + row * this.width
         const rowEndIndex = (row + 1) * this.width
-        // Skip past cells from previous rows (via rowspan)
+        // 跳过前一行的单元格（通过 rowspan）
         while (index < rowEndIndex && this.map[index] < rowStart) index++
         return index === rowEndIndex ? rowEnd - 1 : this.map[index]
       }
@@ -169,14 +190,21 @@ export class TableMap {
     }
   }
 
-  // :: (Node) → TableMap
-  // Find the table map for the given table node.
+  /**
+   * 返回表格的映射信息
+   * @param table
+   * @returns {*}
+   */
   static get(table) {
     return readFromCache(table) || addToCache(table, computeMap(table))
   }
 }
 
-// Compute a table map.
+/**
+ * 计算表格的映射信息
+ * @param table 表格 Node
+ * @returns {TableMap} TableMap
+ */
 function computeMap(table) {
   if (table.type.spec.tableRole !== 'table') {
     throw new RangeError(`Not a table node: ${table.type.name}`)
@@ -249,9 +277,7 @@ function computeMap(table) {
   const tableMap = new TableMap(width, height, map, problems)
   let badWidths = false
 
-  // For columns that have defined widths, but whose widths disagree
-  // between rows, fix up the cells whose width doesn't match the
-  // computed one.
+  // 对于已定义宽度但其宽度在行之间不一致的列，修复宽度与计算值不匹配的单元格
   for (let i = 0; !badWidths && i < colWidths.length; i += 2) {
     if (colWidths[i] != null && colWidths[i + 1] < height) badWidths = true
   }
@@ -260,6 +286,11 @@ function computeMap(table) {
   return tableMap
 }
 
+/**
+ * 获取表格宽度
+ * @param table
+ * @returns {number}
+ */
 function findWidth(table) {
   let width = -1
   let hasRowSpan = false
@@ -286,6 +317,12 @@ function findWidth(table) {
   return width
 }
 
+/**
+ * 查找错误的列宽
+ * @param map 表格 map 数据
+ * @param colWidths 列宽数组
+ * @param table 表格 Node
+ */
 function findBadColWidths(map, colWidths, table) {
   if (!map.problems) map.problems = []
   for (let i = 0, seen = {}; i < map.map.length; i++) {
@@ -314,6 +351,11 @@ function findBadColWidths(map, colWidths, table) {
   }
 }
 
+/**
+ * 重新计算列宽
+ * @param attrs 表格 attrs
+ * @returns {*[]|*} colwidth 数组
+ */
 function freshColWidth(attrs) {
   if (attrs.colwidth) return attrs.colwidth.slice()
   const result = []
