@@ -61,93 +61,101 @@ describe('ColumnResizing', () => {
     return state.apply(state.tr.setMeta(columnResizingPluginKey, { setHandle }))
   }
 
-  // 获取 decorations
+  // 获取 decorations pos 信息
   function getDecorations(state) {
-    return columnResizingPlugin.props.decorations(state).find()
+    return columnResizingPlugin.props
+      .decorations(state)
+      .find()
+      .map((i) => i.from)
+  }
+
+  // 测试函数
+  function test(a, b) {
+    ist(a.join(', '), b.join(', '))
   }
 
   it('测试无跨行跨列表格', () => {
     const state = initState(t)
     const newState = updateState(state, 2)
-    ist(getDecorations(newState).length, 3)
+    test(getDecorations(newState), [6, 23, 40])
   })
 
   it('测试跨行表格', () => {
     const state = initState(t1)
     // 第一行
     const state1 = updateState(state, 2)
-    ist(getDecorations(state1).length, 3)
+    test(getDecorations(state1), [6, 6, 45])
     const state2 = updateState(state, 7)
-    ist(getDecorations(state2).length, 3)
+    test(getDecorations(state2), [11, 28, 50])
     const state3 = updateState(state, 12)
-    ist(getDecorations(state3).length, 3)
+    test(getDecorations(state3), [16, 33, 33])
     const state4 = updateState(state, 17)
-    ist(getDecorations(state4).length, 3)
+    test(getDecorations(state4), [21, 38, 55])
     // 第二行
     const state5 = updateState(state, 24)
-    ist(getDecorations(state5).length, 3)
+    test(getDecorations(state5), [11, 28, 50])
     const state6 = updateState(state, 29)
-    ist(getDecorations(state6).length, 3)
+    test(getDecorations(state6), [16, 33, 33])
     const state7 = updateState(state, 34)
-    ist(getDecorations(state7).length, 3)
+    test(getDecorations(state7), [21, 38, 55])
     // 第三行
     const state8 = updateState(state, 41)
-    ist(getDecorations(state8).length, 3)
+    test(getDecorations(state8), [6, 6, 45])
     const state9 = updateState(state, 46)
-    ist(getDecorations(state9).length, 3)
+    test(getDecorations(state9), [11, 28, 50])
     const state10 = updateState(state, 51)
-    ist(getDecorations(state10).length, 3)
+    test(getDecorations(state10), [21, 38, 55])
   })
 
   it('测试跨列表格', () => {
     const state = initState(t2)
     // 第一行
     const state1 = updateState(state, 2)
-    ist(getDecorations(state1).length, 2)
+    test(getDecorations(state1), [6, 23])
     const state2 = updateState(state, 7)
-    ist(getDecorations(state2).length, 4)
+    test(getDecorations(state2), [11, 28, 40, 47])
     // 第二行
     const state3 = updateState(state, 14)
-    ist(getDecorations(state3).length, 2)
+    test(getDecorations(state3), [18, 35])
     const state4 = updateState(state, 19)
-    ist(getDecorations(state4).length, 2)
+    test(getDecorations(state4), [6, 23])
     const state5 = updateState(state, 24)
-    ist(getDecorations(state5).length, 4)
+    test(getDecorations(state5), [11, 28, 40, 47])
     // 第三行
     const state6 = updateState(state, 31)
-    ist(getDecorations(state6).length, 2)
+    test(getDecorations(state6), [18, 35])
     const state7 = updateState(state, 36)
-    ist(getDecorations(state7).length, 4)
+    test(getDecorations(state7), [11, 28, 40, 47])
     // 第四行
     const state8 = updateState(state, 43)
-    ist(getDecorations(state8).length, 4)
+    test(getDecorations(state8), [11, 28, 40, 47])
   })
 
   it('测试跨行跨列表格', () => {
     const state = initState(t3)
     // 第一行
     const state1 = updateState(state, 2)
-    ist(getDecorations(state1).length, 3)
+    test(getDecorations(state1), [6, 6, 47])
     const state2 = updateState(state, 7)
-    ist(getDecorations(state2).length, 3)
+    test(getDecorations(state2), [11, 28, 40])
     const state3 = updateState(state, 12)
-    ist(getDecorations(state3).length, 2)
+    test(getDecorations(state3), [16, 52])
     const state4 = updateState(state, 17)
-    ist(getDecorations(state4).length, 4)
+    test(getDecorations(state4), [21, 33, 33, 57])
     // 第二行
     const state5 = updateState(state, 24)
-    ist(getDecorations(state5).length, 3)
+    test(getDecorations(state5), [11, 28, 40])
     const state6 = updateState(state, 29)
-    ist(getDecorations(state6).length, 4)
+    test(getDecorations(state6), [21, 33, 33, 57])
     // 第三行
     const state7 = updateState(state, 36)
-    ist(getDecorations(state7).length, 3)
+    test(getDecorations(state7), [11, 28, 40])
     // 第四行
     const state8 = updateState(state, 43)
-    ist(getDecorations(state8).length, 3)
+    test(getDecorations(state8), [6, 6, 47])
     const state9 = updateState(state, 48)
-    ist(getDecorations(state9).length, 2)
+    test(getDecorations(state9), [16, 52])
     const state10 = updateState(state, 53)
-    ist(getDecorations(state10).length, 4)
+    test(getDecorations(state10), [21, 33, 33, 57])
   })
 })
