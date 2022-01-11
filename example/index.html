@@ -1,12 +1,21 @@
-<!doctype html>
-<meta charset=utf8>
+<!DOCTYPE html>
+<meta charset="utf8" />
 <title>Table demo</title>
 
-<link rel=stylesheet href="../node_modules/prosemirror-view/style/prosemirror.css">
-<link rel=stylesheet href="../node_modules/prosemirror-menu/style/menu.css">
-<link rel=stylesheet href="../node_modules/prosemirror-example-setup/style/style.css">
-<link rel=stylesheet href="../node_modules/prosemirror-gapcursor/style/gapcursor.css">
-<link rel=stylesheet href="style/tables.css">
+<link
+  rel="stylesheet"
+  href="../node_modules/prosemirror-view/style/prosemirror.css"
+/>
+<link rel="stylesheet" href="../node_modules/prosemirror-menu/style/menu.css" />
+<link
+  rel="stylesheet"
+  href="../node_modules/prosemirror-example-setup/style/style.css"
+/>
+<link
+  rel="stylesheet"
+  href="../node_modules/prosemirror-gapcursor/style/gapcursor.css"
+/>
+<link rel="stylesheet" href="../style/tables.css" />
 <style>
   body {
     max-width: 50em;
@@ -26,13 +35,14 @@
     margin: 0;
   }
 
-  .ProseMirror th, .ProseMirror td {
+  .ProseMirror th,
+  .ProseMirror td {
     min-width: 1em;
     padding: 3px 5px;
     border: 1px solid #ddd;
   }
 
-  .ProseMirror .tableWrapper {
+  .ProseMirror .table-wrapper {
     margin: 1em 0;
   }
 
@@ -43,21 +53,92 @@
 </style>
 
 <h1>Table demo</h1>
-
-<div style="display: none" id=content>
+<div style="display: none" id="content">
   <h2>Example content</h2>
   <p>The table:</p>
   <table>
     <tr>
-      <th colspan=3 data-colwidth="100,0,0">Wide header
-      </td></tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
     <tr>
-      <td>One</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td rowspan="2">1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td rowspan="2">6</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td colspan="2">1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td colspan="2">7</td>
+    </tr>
+    <tr>
+      <td colspan="3">8</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td rowspan="2">1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td colspan="2" rowspan="2">4</td>
+    </tr>
+    <tr>
+      <td colspan="2">5</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td colspan="2">6</td>
+      <td>11</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td colspan="3">Wide header</td>
+    </tr>
+    <tr>
+      <td rowspan="3">One</td>
       <td>Two</td>
       <td>Three</td>
     </tr>
     <tr>
-      <td rowspan="2">Four</td>
       <td>Five</td>
       <td>Six</td>
     </tr>
@@ -68,6 +149,6 @@
   </table>
 </div>
 
-<div id=editor></div>
+<div id="editor"></div>
 
 <script src="demo_bundle.js"></script>

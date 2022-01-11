@@ -6,19 +6,13 @@
  * 获取单元格 attrs
  * @param dom 单元格 DOM
  * @param extraAttrs 属性
- * @returns {{colspan: number, rowspan: number, colwidth: (*|null)}}
+ * @returns {{colspan: number, rowspan: number}}
  */
 function getCellAttrs(dom, extraAttrs) {
-  const widthAttr = dom.getAttribute('data-colwidth')
-  const widths =
-    widthAttr && /^\d+(,\d+)*$/.test(widthAttr)
-      ? widthAttr.split(',').map((s) => Number(s))
-      : null
   const colspan = Number(dom.getAttribute('colspan') || 1)
   const result = {
     colspan,
     rowspan: Number(dom.getAttribute('rowspan') || 1),
-    colwidth: widths && widths.length === colspan ? widths : null,
   }
   for (const prop in extraAttrs) {
     const getter = extraAttrs[prop].getFromDOM
@@ -38,9 +32,6 @@ function setCellAttrs(node, extraAttrs) {
   const attrs = {}
   if (node.attrs.colspan !== 1) attrs.colspan = node.attrs.colspan
   if (node.attrs.rowspan !== 1) attrs.rowspan = node.attrs.rowspan
-  if (node.attrs.colwidth) {
-    attrs['data-colwidth'] = node.attrs.colwidth.join(',')
-  }
   for (const prop in extraAttrs) {
     const setter = extraAttrs[prop].setDOMAttr
     if (setter) setter(node.attrs[prop], attrs)
@@ -84,10 +75,15 @@ function setCellAttrs(node, extraAttrs) {
  */
 export function tableNodes(options) {
   const extraAttrs = options.cellAttributes || {}
+  const tableAttrs = {
+    colwidth: { default: null },
+    properties: { default: {} },
+  }
   const cellAttrs = {
     colspan: { default: 1 },
     rowspan: { default: 1 },
     colwidth: { default: null },
+    properties: { default: {} },
   }
   for (const prop in extraAttrs) {
     cellAttrs[prop] = { default: extraAttrs[prop].default }
@@ -96,6 +92,7 @@ export function tableNodes(options) {
   return {
     table: {
       content: 'table_row+',
+      attrs: tableAttrs,
       tableRole: 'table',
       isolating: true,
       group: options.tableGroup,

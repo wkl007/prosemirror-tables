@@ -12,7 +12,7 @@ import { tableNodeTypes } from './schema'
 export const key = new PluginKey('selectingCells')
 
 /**
- * 单元格周围
+ * 单元格详细位置信息
  * @param $pos
  * @returns {null|*}
  */
@@ -218,4 +218,80 @@ export function columnIsHeader(map, table, col) {
     }
   }
   return true
+}
+
+const inBrowser = !!window
+
+function getDeviceDPI() {
+  let deviceXDPI = 96
+  let deviceYDPI = 96
+  if (!inBrowser) {
+    return {
+      deviceXDPI,
+      deviceYDPI,
+    }
+  }
+
+  const windowScreen = window.screen
+  if (windowScreen.deviceXDPI !== undefined) {
+    deviceXDPI = windowScreen.deviceXDPI
+    deviceYDPI = windowScreen.deviceYDPI
+  } else {
+    const tmpNode = document.createElement('div')
+    tmpNode.style.cssText =
+      'width:1in;height:1in;position:absolute;left:0px;top:0px;z-index:99;visibility:hidden'
+    document.body.appendChild(tmpNode)
+    deviceXDPI = parseInt(tmpNode.offsetWidth, 10)
+    deviceYDPI = parseInt(tmpNode.offsetHeight, 10)
+    tmpNode.parentNode.removeChild(tmpNode)
+  }
+  return {
+    deviceXDPI,
+    deviceYDPI,
+  }
+}
+
+const deviceDPI = getDeviceDPI(window.screen)
+
+/**
+ * px 单位转 pt 单位
+ * @param number
+ * @returns {number}
+ */
+export function pxToPt(number) {
+  if (!number) return 0
+  return number * (72 / deviceDPI.deviceXDPI)
+}
+
+/**
+ * pt 单位转 px 单位
+ * @param val
+ * @param toInteger
+ * @returns {number}
+ */
+export function ptToPx(val, toInteger = true) {
+  const value = (val * 4) / 3
+  if (toInteger) {
+    return Math.floor(value)
+  }
+
+  return value
+}
+
+/**
+ * 生成转换后的数字
+ * @param number
+ * @param convertUnit
+ * @param reverse
+ * @returns {number|*}
+ */
+export function generateConvertNumber(
+  number = 0,
+  convertUnit = 'px',
+  reverse = false
+) {
+  if (convertUnit === 'pt') {
+    return reverse ? ptToPx(number / 20) : pxToPt(number) * 20
+  }
+  return number
 }

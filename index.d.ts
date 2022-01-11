@@ -266,6 +266,8 @@ export function columnResizing<S extends Schema = any>(props: {
   handleWidth?: number
   cellMinWidth?: number
   View?: NodeView<S>
+  borderColumnResizable?: boolean
+  convertUnit?: 'px' | 'pt'
 }): Plugin<S>
 
 export const columnResizingPluginKey: PluginKey
@@ -278,8 +280,12 @@ export function updateColumnsOnResize(
   colgroup: Element,
   table: Element,
   cellMinWidth: number,
+  convertUnit: 'px' | 'pt',
   overrideCol?: number,
-  overrideValue?: number
+  overrideValue?: number,
+  offset?: number,
+  isTableLeftBorder?: boolean,
+  isTableRightBorder?: boolean
 ): void
 
 export function cellAround<S extends Schema = any>(

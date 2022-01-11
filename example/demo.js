@@ -80,7 +80,9 @@ const doc = DOMParser.fromSchema(schema).parse(
 let state = EditorState.create({
   doc,
   plugins: [
-    columnResizing(),
+    columnResizing({
+      // convertUnit: 'pt',
+    }),
     tableEditing(),
     keymap({
       Tab: goToNextCell(1),
