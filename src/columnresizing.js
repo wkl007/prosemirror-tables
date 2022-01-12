@@ -475,24 +475,25 @@ function updateColumnWidth(view, pluginState, colWidth) {
     )
     // 表格宽度
     const tblW = generateConvertNumber(width.replace('px', ''), convertUnit)
-    const properties = Object.assign(tableAttrs.properties, {
-      tblInd: {
-        attributes: {
-          w: tblInd,
-          type: 'dxa',
-        },
-      },
-      tblW: {
-        attributes: {
-          w: tblW,
-          type: 'dxa',
-        },
-      },
-    })
-    const attr = Object.assign(tableAttrs, {
+    const attr = {
+      ...tableAttrs,
       colwidth: tableColWidth,
-      properties,
-    })
+      properties: {
+        ...tableAttrs.properties,
+        tblInd: {
+          attributes: {
+            w: tblInd,
+            type: 'dxa',
+          },
+        },
+        tblW: {
+          attributes: {
+            w: tblW,
+            type: 'dxa',
+          },
+        },
+      },
+    }
     tr.setNodeMarkup(start - 1, null, attr)
   }
   if (tr.docChanged) view.dispatch(tr)
