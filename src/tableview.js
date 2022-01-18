@@ -156,10 +156,7 @@ export function updateColumns(
       preMarginLeft = Number(width)
     }
     table.style.marginLeft = `${preMarginLeft + offset}px`
-  }
-
-  // 表格最右侧拖拽
-  if (isTableRightBorder) {
+  } else if (isTableRightBorder) {
     let tableWidth = `calc(${defaultTableWidth} + ${offset}px)`
     if (properties.tblW && properties.tblW.attributes.type === 'dxa') {
       const { w } = properties.tblW.attributes
@@ -167,5 +164,20 @@ export function updateColumns(
       tableWidth = `calc(${width}px + ${offset}px)`
     }
     table.style.width = tableWidth
+  } else {
+    let tableWidth = `calc(${defaultTableWidth})`
+    if (properties.tblW && properties.tblW.attributes.type === 'dxa') {
+      const { w } = properties.tblW.attributes
+      const width = generateConvertNumber(w, convertUnit, true)
+      tableWidth = `${width}px`
+    }
+    table.style.width = tableWidth
+    let preMarginLeft = 0
+    if (properties.tblInd) {
+      const { w } = properties.tblInd.attributes
+      const width = generateConvertNumber(w, convertUnit, true)
+      preMarginLeft = `${Number(width)}px`
+    }
+    table.style.marginLeft = preMarginLeft
   }
 }

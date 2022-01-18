@@ -3,28 +3,28 @@ import { EditorState } from 'prosemirror-state'
 import { DOMParser, Schema } from 'prosemirror-model'
 import { schema as baseSchema } from 'prosemirror-schema-basic'
 import { keymap } from 'prosemirror-keymap'
-import { exampleSetup, buildMenuItems } from 'prosemirror-example-setup'
-import { MenuItem, Dropdown } from 'prosemirror-menu'
+import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup'
+import { Dropdown, MenuItem } from 'prosemirror-menu'
 
 import {
   addColumnAfter,
   addColumnBefore,
-  deleteColumn,
   addRowAfter,
   addRowBefore,
-  deleteRow,
-  mergeCells,
-  splitCell,
-  setCellAttr,
-  toggleHeaderRow,
-  toggleHeaderColumn,
-  toggleHeaderCell,
-  goToNextCell,
-  deleteTable,
-  tableEditing,
   columnResizing,
-  tableNodes,
+  deleteColumn,
+  deleteRow,
+  deleteTable,
   fixTables,
+  goToNextCell,
+  mergeCells,
+  setCellAttr,
+  splitCell,
+  tableEditing,
+  tableNodes,
+  toggleHeaderCell,
+  toggleHeaderColumn,
+  toggleHeaderRow,
 } from '../src'
 
 const schema = new Schema({
@@ -93,7 +93,14 @@ let state = EditorState.create({
 const fix = fixTables(state)
 if (fix) state = state.apply(fix.setMeta('addToHistory', false))
 
-window.view = new EditorView(document.querySelector('#editor'), { state })
+window.view = new EditorView(document.querySelector('#editor'), {
+  state,
+  handleClickOn: (view, pos, node) => {
+    if (node.type.name === 'table') {
+      console.log(pos, node)
+    }
+  },
+})
 
 document.execCommand('enableObjectResizing', false, false)
 document.execCommand('enableInlineTableEditing', false, false)

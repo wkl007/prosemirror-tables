@@ -76,8 +76,9 @@ function setCellAttrs(node, extraAttrs) {
 export function tableNodes(options) {
   const extraAttrs = options.cellAttributes || {}
   const tableAttrs = {
-    colwidth: { default: null },
+    colwidth: { default: [] },
     properties: { default: {} },
+    id: { default: null },
   }
   const cellAttrs = {
     colspan: { default: 1 },

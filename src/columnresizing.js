@@ -423,7 +423,7 @@ function updateColumnWidth(view, pluginState, colWidth) {
     map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan - 1
   const { tr } = view.state
   // 表格属性
-  const { attrs: tableAttrs } = table
+  const tableAttrs = JSON.parse(JSON.stringify(table.attrs))
   // 表格 colwidth 属性
   let { colwidth: tableColWidth } = tableAttrs
   // 调整的下一列列宽列表
@@ -594,7 +594,9 @@ function handleDecorations(state, pluginState) {
     // 跨列单元格
     const isCrossColumnCell = map.map[index] === map.map[index + 1]
     if (isLeftBorder || isRightBorder || !isCrossColumnCell) {
+      // 单元格在 map.map 中的 pos
       const cellPos = map.map[index]
+      // 生成 decoration 的位置信息，在对应单元格 td 内部
       const pos = start + cellPos + table.nodeAt(cellPos).nodeSize - 1
       const dom = document.createElement('div')
       dom.className = isLeftBorder
